@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 public class Program {
@@ -15,7 +16,31 @@ public class Program {
         SortUtils.quickSort(arr);
         ArrayUtils.printArray(arr);
 
+        int[] testArr = ArrayUtils.prepareArray(100000);
+        long startTime = System.currentTimeMillis();
+        SortUtils.directSort(testArr.clone());
+        long endTime = System.currentTimeMillis();
+        System.out.printf("Время выполнения сортировки выбором: %d  мс\n", endTime - startTime);
 
+        startTime = System.currentTimeMillis();
+        SortUtils.quickSort(testArr.clone());
+        endTime = System.currentTimeMillis();
+        System.out.printf("Время выполнения быстрой сортировки %d  мс\n", endTime - startTime);
+
+        startTime = System.currentTimeMillis();
+        Arrays.sort(testArr.clone());
+        endTime = System.currentTimeMillis();
+        System.out.printf("Время выполнения встроенной быстрой сортировки %d  мс\n", endTime - startTime);
+
+        int[] testArr2 = new int[]{-5, 100, -1, 3, 4, 5, 9, 22, 9, 101, -6};
+        ArrayUtils.printArray(testArr2);
+        SortUtils.quickSort(testArr2);
+        ArrayUtils.printArray(testArr2);
+        int searchElement = 9;
+        int res = SearchUtils.binarySearch(testArr2, searchElement);
+        System.out.printf("Элемент %d %s\n", searchElement,
+                res >= 0 ? String.format("найден в массиве по индексу %d", res) :
+                "не найден");
 
     }
 
@@ -79,6 +104,10 @@ public class Program {
             }
         }
 
+        /**
+         * Быстрая сортировка
+         * @param arr
+         */
         static void quickSort(int[] arr) {
             quickSort(arr, 0, arr.length - 1);
         }
@@ -113,5 +142,28 @@ public class Program {
                 quickSort(arr, start, right);
             }
         }
+    }
+
+    static class SearchUtils {
+
+        static int binarySearch(int[] array, int value) {
+            return binarySearch(array, value,0, array.length - 1);
+        }
+        static int binarySearch(int[] array, int value, int left, int right) {
+            if (right < left) {
+                return -1;
+            }
+            int middle = (left + right) / 2;
+
+            if (array[middle] == value) {
+                return middle;
+            } else if (array[middle] < value) {
+                return binarySearch(array, value, middle + 1, right);
+            } else {
+                return binarySearch(array, value, left, middle - 1);
+            }
+        }
+
+
     }
 }

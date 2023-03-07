@@ -10,6 +10,13 @@ public class Program {
         SortUtils.directSort(arr);
         ArrayUtils.printArray(arr);
 
+        arr = ArrayUtils.prepareArray();
+        ArrayUtils.printArray(arr);
+        SortUtils.quickSort(arr);
+        ArrayUtils.printArray(arr);
+
+
+
     }
 
     static class ArrayUtils {
@@ -71,10 +78,40 @@ public class Program {
                 }
             }
         }
+
+        static void quickSort(int[] arr) {
+            quickSort(arr, 0, arr.length - 1);
+        }
+
+        private static void quickSort(int[] arr, int start, int end) {
+            int left = start;
+            int right = end;
+            int pivot = arr[(start + end) / 2];
+
+            do {
+                while (arr[left] < pivot) {
+                    left++;
+                }
+                while (arr[right] > pivot) {
+                    right--;
+                }
+
+                if (left <= right) {
+                    if (left < right) {
+                        int tmp = arr[left];
+                        arr[left] = arr[right];
+                        arr[right] = tmp;
+                    }
+                    left++;
+                    right--;
+                }
+            } while (left <= right);
+            if (left < end) {
+                quickSort(arr, left, end);
+            }
+            if (start < right) {
+                quickSort(arr, start, right);
+            }
+        }
     }
-
-    static void quickSort(int[] arr, int start, int end) {
-
-    }
-
 }
